@@ -1,0 +1,112 @@
+/* ─────────────────────────────────────────────────────
+   SMART SMAN 2 Sampit — Shared Layout Components
+   Inject sidebar + header dynamically on each page
+   ───────────────────────────────────────────────────── */
+
+const MENU_ITEMS = [
+  { section: 'Utama', items: [
+    { icon: '⊞', label: 'Dashboard',     href: 'index.html',       badge: '' },
+    { icon: '📅', label: 'Jadwal',        href: 'jadwal.html',      badge: '' },
+    { icon: '📓', label: 'Jurnal Guru',   href: 'jurnal.html',      badge: '' },
+    { icon: '✅', label: 'Presensi',      href: 'presensi.html',    badge: 'Baru' },
+  ]},
+  { section: 'KBM & Izin', items: [
+    { icon: '📊', label: 'Rekap KBM',     href: 'rekap-kbm.html',   badge: '' },
+    { icon: '📝', label: 'Izin Siswa',    href: 'izin.html',        badge: '' },
+    { icon: '🗂️', label: 'Surat Izin',   href: 'surat-izin.html',  badge: '' },
+    { icon: '⏱️', label: 'Alokasi Waktu', href: 'alokasi.html',     badge: '' },
+  ]},
+  { section: 'Layanan Siswa', items: [
+    { icon: '💙', label: 'Layanan BK',    href: 'bk.html',          badge: '' },
+    { icon: '⚠️', label: 'Pembinaan BK', href: 'pembinaan.html',   badge: '' },
+    { icon: '👩‍🏫', label: 'Wali Kelas',  href: 'walikelas.html',   badge: '' },
+  ]},
+  { section: 'Laporan', items: [
+    { icon: '📈', label: 'Laporan',       href: 'laporan.html',     badge: '' },
+    { icon: '⚙️', label: 'Pengaturan',   href: 'pengaturan.html',  badge: '' },
+  ]},
+];
+
+function renderLayout(config = {}) {
+  const {
+    pageTitle    = 'Dashboard',
+    pageSubtitle = '',
+    headerActions = '',
+    userInitial  = 'KS',
+    userName     = 'Kepala Sekolah',
+    userRole     = 'Administrator',
+  } = config;
+
+  // ── Sidebar ──────────────────────────────────────────
+  const navHTML = MENU_ITEMS.map(section => `
+    <div class="nav-section">
+      <div class="nav-label">${section.section}</div>
+      ${section.items.map(item => `
+        <a class="nav-item" href="${item.href}">
+          <span class="ni">${item.icon}</span>
+          ${item.label}
+          ${item.badge ? `<span class="nav-badge">${item.badge}</span>` : ''}
+        </a>
+      `).join('')}
+    </div>
+  `).join('');
+
+  const sidebarHTML = `
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">S</div>
+        <div class="logo-text">
+          <div class="app-name">SMART</div>
+          <div class="school-name">SMAN 2 SAMPIT</div>
+        </div>
+      </div>
+      <nav>${navHTML}</nav>
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-av">${userInitial}</div>
+          <div>
+            <div class="user-name">${userName}</div>
+            <div class="user-role">${userRole}</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  `;
+
+  // ── Header ────────────────────────────────────────────
+  const subtitleHTML = pageSubtitle
+    ? `<div class="header-sub today-date">${pageSubtitle}</div>` : '';
+
+  const headerHTML = `
+    <header class="header">
+      <div style="flex:1">
+        <div class="header-title">${pageTitle}</div>
+        ${subtitleHTML}
+      </div>
+      <div class="flex items-center gap-3">
+        ${headerActions}
+        <button class="btn-notif" title="Notifikasi">
+          🔔<div class="notif-dot"></div>
+        </button>
+        <div class="user-chip">
+          <div class="chip-av">${userInitial}</div>
+          <span class="chip-name">${userName}</span>
+        </div>
+      </div>
+    </header>
+  `;
+
+  // ── Inject into #app-root ─────────────────────────────
+  const root = document.getElementById('app-root');
+  if (root) {
+    root.innerHTML = sidebarHTML + `
+      <main class="main">
+        ${headerHTML}
+        <div class="content" id="page-content"></div>
+      </main>
+    `;
+  } else {
+    document.body.insertAdjacentHTML('afterbegin', sidebarHTML);
+    document.querySelector('.main')?.insertAdjacentHTML('afterbegin', headerHTML);
+  }
+}
