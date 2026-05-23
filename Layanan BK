@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Layanan BK — SMART SMAN 2 Sampit</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-logo"><div class="logo-icon">S</div><div class="logo-text"><div class="app-name">SMART</div><div class="school-name">SMAN 2 SAMPIT</div></div></div>
+    <nav>
+      <div class="nav-section"><div class="nav-label">Utama</div>
+        <a class="nav-item" href="index.html"><span class="ni">⊞</span> Dashboard</a>
+        <a class="nav-item" href="jadwal.html"><span class="ni">📅</span> Jadwal</a>
+        <a class="nav-item" href="jurnal.html"><span class="ni">📓</span> Jurnal Guru</a>
+        <a class="nav-item" href="presensi.html"><span class="ni">✅</span> Presensi</a>
+      </div>
+      <div class="nav-section"><div class="nav-label">KBM &amp; Izin</div>
+        <a class="nav-item" href="rekap-kbm.html"><span class="ni">📊</span> Rekap KBM</a>
+        <a class="nav-item" href="izin.html"><span class="ni">📝</span> Izin Siswa</a>
+        <a class="nav-item" href="surat-izin.html"><span class="ni">🗂️</span> Surat Izin</a>
+        <a class="nav-item" href="alokasi.html"><span class="ni">⏱️</span> Alokasi Waktu</a>
+      </div>
+      <div class="nav-section"><div class="nav-label">Layanan Siswa</div>
+        <a class="nav-item active" href="bk.html"><span class="ni">💙</span> Layanan BK</a>
+        <a class="nav-item" href="pembinaan.html"><span class="ni">⚠️</span> Pembinaan BK</a>
+        <a class="nav-item" href="walikelas.html"><span class="ni">👩‍🏫</span> Wali Kelas</a>
+      </div>
+      <div class="nav-section"><div class="nav-label">Laporan</div>
+        <a class="nav-item" href="laporan.html"><span class="ni">📈</span> Laporan</a>
+        <a class="nav-item" href="pengaturan.html"><span class="ni">⚙️</span> Pengaturan</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer"><div class="user-info"><div class="user-av">NH</div><div><div class="user-name">Bu Nuraini Hasanah</div><div class="user-role">Guru BK</div></div></div></div>
+  </aside>
+
+  <main class="main">
+    <header class="header">
+      <div style="flex:1">
+        <div class="header-title">Layanan BK &amp; Pembinaan Siswa</div>
+        <div class="header-sub">Guru BK: Ibu Nuraini Hasanah, S.Pd · SMAN 2 Sampit</div>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="btn btn-outline btn-sm" onclick="printPage()">📥 Laporan Bulanan</button>
+        <button class="btn btn-primary btn-sm" onclick="showForm()">➕ Tambah Catatan</button>
+      </div>
+    </header>
+
+    <div class="content">
+      <!-- Stats -->
+      <div class="stats-grid mb-5">
+        <div class="stat-card"><div class="stat-icon" style="background:var(--blue-lt)">💬</div><div class="stat-value" style="color:var(--blue)" data-count="48">0</div><div class="stat-label">Konseling Individu</div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:var(--teal-lt)">👥</div><div class="stat-value" style="color:var(--teal)" data-count="12">0</div><div class="stat-label">Konseling Kelompok</div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:var(--amber-lt)">⚠️</div><div class="stat-value" style="color:var(--amber)" data-count="31">0</div><div class="stat-label">Kasus Pembinaan</div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:var(--red-lt)">🔴</div><div class="stat-value" style="color:var(--red)" data-count="5">0</div><div class="stat-label">Surat Peringatan</div></div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs fit mb-5" data-tabs>
+        <button class="tab-btn">⚠️ Pembinaan</button>
+        <button class="tab-btn">💬 Layanan BK</button>
+        <button class="tab-btn">📊 Grafik</button>
+      </div>
+
+      <!-- TAB 1: Pembinaan -->
+      <div class="tab-panel">
+        <div style="display:grid;grid-template-columns:1fr 300px;gap:16px">
+          <div class="card">
+            <div class="card-header">
+              <div><div class="card-title">Rekap Pembinaan Siswa</div><div class="card-sub">Semester Genap 2025/2026 · 31 kasus</div></div>
+              <button class="btn btn-outline btn-sm" onclick="exportTableCSV('pembinaan-table','pembinaan.csv')">📥 Export</button>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table" id="pembinaan-table">
+                <thead><tr><th>Siswa</th><th>Kategori</th><th>Pelanggaran</th><th>Tanggal</th><th>Poin</th><th>Status</th><th>Aksi</th></tr></thead>
+                <tbody id="pembinaan-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="flex-col">
+            <!-- Siswa pantauan -->
+            <div class="card">
+              <div class="card-header"><div class="card-title">Siswa Pantauan</div><span class="badge badge-red">8 siswa</span></div>
+              <div class="card-body" style="padding:8px 18px" id="pantauan-list"></div>
+            </div>
+            <!-- Form cepat -->
+            <div class="card" id="form-section">
+              <div class="card-header"><div class="card-title">Catat Pembinaan Baru</div></div>
+              <div class="card-body">
+                <div class="form-group"><label class="form-label">Nama Siswa</label><input class="form-ctrl" type="text" placeholder="Cari nama siswa..."></div>
+                <div class="form-group"><label class="form-label">Jenis Pelanggaran</label>
+                  <select class="form-ctrl"><option>Keterlambatan</option><option>Tidak Berseragam</option><option>Keributan di Kelas</option><option>Tidak Mengerjakan Tugas</option><option>Penggunaan HP</option><option>Lainnya</option></select></div>
+                <div class="form-group"><label class="form-label">Bentuk Pembinaan</label>
+                  <select class="form-ctrl"><option>Teguran lisan</option><option>Konseling individu</option><option>Surat peringatan</option><option>Panggil orang tua</option></select></div>
+                <div class="form-group"><label class="form-label">Catatan Tindak Lanjut</label>
+                  <textarea class="form-ctrl" placeholder="Hasil dan rencana tindak lanjut..."></textarea></div>
+                <button class="btn btn-primary w-full" style="justify-content:center;margin-top:4px" onclick="showToast('✅ Catatan pembinaan berhasil disimpan!')">💾 Simpan Pembinaan</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: Layanan BK -->
+      <div class="tab-panel">
+        <div style="display:grid;grid-template-columns:1fr 280px;gap:16px">
+          <div class="card">
+            <div class="card-header"><div><div class="card-title">Riwayat Layanan BK</div><div class="card-sub">60 layanan semester ini</div></div><button class="btn btn-outline btn-sm">➕ Catat Layanan</button></div>
+            <div class="card-body" style="padding:8px 18px" id="layanan-list"></div>
+          </div>
+          <div class="flex-col">
+            <div class="card">
+              <div class="card-header"><div class="card-title">Jadwal BK Hari Ini</div></div>
+              <div class="card-body" style="padding:8px 18px" id="jadwal-bk"></div>
+            </div>
+            <div class="card">
+              <div class="card-header"><div class="card-title">Statistik Layanan</div></div>
+              <div class="card-body" id="stats-layanan"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: Grafik -->
+      <div class="tab-panel">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Tren Pelanggaran Bulanan</div></div>
+            <div class="card-body">
+              <div id="tren-chart" style="display:flex;align-items:flex-end;gap:10px;height:130px;padding:0 4px"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Distribusi Kategori</div></div>
+            <div class="card-body" id="kategori-grid"></div>
+          </div>
+          <div class="card" style="grid-column:1/-1">
+            <div class="card-header"><div class="card-title">Siswa Poin Tertinggi</div><span style="font-size:12px;color:var(--gray-400)">SP: 40 poin · Skorsing: 75 poin</span></div>
+            <div class="card-body" id="poin-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="assets/js/app.js"></script>
+<script>
+// Pembinaan data
+const pembinaan = [
+  { nama:'Siti Rahayu',   kelas:'XII IPA 2', kat:'Absensi',    kat_cls:'badge-purple', pelang:'Terlambat 3x dalam sebulan', tgl:'22 Mei 2026', poin:25, status:'Proses', st_cls:'badge-amber' },
+  { nama:'Doni Prasetyo', kelas:'XI IPS 3',  kat:'Tata Tertib',kat_cls:'badge-red',    pelang:'Tidak menggunakan seragam lengkap', tgl:'20 Mei 2026', poin:15, status:'Selesai', st_cls:'badge-green' },
+  { nama:'Rizal Maulana', kelas:'XII IPA 1', kat:'Sikap',      kat_cls:'badge-amber',  pelang:'Membuat keributan di kelas', tgl:'18 Mei 2026', poin:40, status:'SP-1', st_cls:'badge-red' },
+  { nama:'Anisa Putri',   kelas:'X MIPA 4',  kat:'Akademik',   kat_cls:'badge-blue',   pelang:'Tidak mengumpulkan tugas 2x', tgl:'15 Mei 2026', poin:20, status:'Selesai', st_cls:'badge-green' },
+  { nama:'Bagas Eka Putra',kelas:'XI IPA 2', kat:'Tata Tertib',kat_cls:'badge-red',    pelang:'HP di kelas tanpa izin guru', tgl:'12 Mei 2026', poin:50, status:'SP-2', st_cls:'badge-red' },
+];
+document.getElementById('pembinaan-tbody').innerHTML = pembinaan.map(p => `
+  <tr>
+    <td><div style="font-weight:600">${p.nama}</div><div style="font-size:11px;color:var(--gray-400)">${p.kelas}</div></td>
+    <td><span class="badge ${p.kat_cls}">${p.kat}</span></td>
+    <td style="font-size:12px;max-width:160px">${p.pelang}</td>
+    <td style="font-size:12px;white-space:nowrap">${p.tgl}</td>
+    <td><span class="badge ${p.poin>=40?'badge-red':p.poin>=25?'badge-amber':'badge-green'}" style="font-size:11px">${p.poin} poin</span></td>
+    <td><span class="badge ${p.st_cls}">${p.status}</span></td>
+    <td>
+      <button class="btn btn-sm" style="background:var(--blue-lt);color:var(--blue);border:none;padding:4px 9px;font-size:11px" onclick="showToast('📋 Detail pembinaan '+this.closest('tr').querySelector('td div').textContent)">Detail</button>
+      <button class="btn btn-sm" style="background:var(--amber-lt);color:#d97706;border:none;padding:4px 9px;font-size:11px" onclick="showToast('📄 Membuat surat peringatan...','warning')">Surat</button>
+    </td>
+  </tr>
+`).join('');
+
+// Pantauan
+const pantauan = [
+  { init:'FK', kelas:'XI MIPA 3', name:'Fadli Kurnia',    poin:60, bg:'#fee2e2', tc:'#991b1b' },
+  { init:'BP', kelas:'XI IPA 2',  name:'Bagas Eka Putra', poin:50, bg:'#fef9c3', tc:'#713f12' },
+  { init:'RM', kelas:'XII IPA 1', name:'Rizal Maulana',   poin:40, bg:'#fce7f3', tc:'#9d174d' },
+  { init:'LH', kelas:'X IPS 1',   name:'Lutfi Haikal',    poin:35, bg:'#f3e8ff', tc:'#6b21a8' },
+  { init:'SR', kelas:'XII IPA 2', name:'Siti Rahayu',     poin:25, bg:'#dbeafe', tc:'#1d4ed8' },
+];
+document.getElementById('pantauan-list').innerHTML = pantauan.map(s => {
+  const col = s.poin>=50?'#ef4444':s.poin>=35?'#f59e0b':'#10b981';
+  return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--gray-50);cursor:pointer">
+    <div style="width:32px;height:32px;border-radius:8px;background:${s.bg};color:${s.tc};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">${s.init}</div>
+    <div style="flex:1"><div style="font-size:13px;font-weight:500">${s.name}</div><div style="font-size:11px;color:var(--gray-400)">${s.kelas}</div></div>
+    <div style="width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;background:${col}22;color:${col};border:2px solid ${col}44">${s.poin}</div>
+  </div>`;
+}).join('');
+
+// Layanan BK
+const layanan = [
+  { icon:'💬', bg:'#eff6ff', nama:'Ahmad Rizki',       kelas:'XII IPA 1', detail:'Konseling karir dan pilihan jurusan kuliah', tipe:'Konseling Individu', tipeCls:'background:#eff6ff;color:#1d4ed8', tgl:'22 Mei' },
+  { icon:'👥', bg:'#e4f6f4', nama:'Kelompok XI IPS 2', kelas:'5 siswa',   detail:'Manajemen stres dan motivasi belajar', tipe:'Konseling Kelompok', tipeCls:'background:#e4f6f4;color:#0d9488', tgl:'21 Mei' },
+  { icon:'👨‍👩‍👧', bg:'#fef9c3', nama:'Orang Tua Bagas', kelas:'XI IPA 2', detail:'Konsultasi perilaku dan prestasi akademik', tipe:'Konsultasi Orang Tua', tipeCls:'background:#fffbeb;color:#d97706', tgl:'20 Mei' },
+  { icon:'🏫', bg:'#f5f3ff', nama:'Kelas X MIPA 1',   kelas:'32 siswa', detail:'Bimbingan klasikal: adaptasi lingkungan baru', tipe:'Bimbingan Klasikal', tipeCls:'background:#f5f3ff;color:#7c3aed', tgl:'19 Mei' },
+  { icon:'💬', bg:'#eff6ff', nama:'Nur Safitri',       kelas:'XII IPA 1', detail:'Konseling permasalahan hubungan sosial', tipe:'Konseling Individu', tipeCls:'background:#eff6ff;color:#1d4ed8', tgl:'18 Mei' },
+];
+document.getElementById('layanan-list').innerHTML = layanan.map(l => `
+  <div style="display:flex;align-items:flex-start;gap:12px;padding:11px 0;border-bottom:1px solid var(--gray-50);cursor:pointer">
+    <div style="width:36px;height:36px;border-radius:10px;background:${l.bg};display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">${l.icon}</div>
+    <div style="flex:1">
+      <div style="font-size:13px;font-weight:600">${l.nama} <span style="font-weight:400;color:var(--gray-400)">· ${l.kelas}</span></div>
+      <div style="font-size:11px;color:var(--gray-400);margin-top:2px">${l.detail}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+      <span style="font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;${l.tipeCls}">${l.tipe}</span>
+      <span style="font-size:10px;color:var(--gray-400)">${l.tgl} 2026</span>
+    </div>
+  </div>
+`).join('');
+
+// Jadwal BK hari ini
+document.getElementById('jadwal-bk').innerHTML = [
+  { jam:'08.00', nama:'Ahmad Rizki', jenis:'Konseling Individu', c:'var(--blue)' },
+  { jam:'09.30', nama:'Nur Laila', jenis:'Konseling Individu', c:'var(--teal)' },
+  { jam:'10.30', nama:'Kelas X IPS 1', jenis:'Bimbingan Klasikal', c:'var(--purple)' },
+  { jam:'13.00', nama:'Orang Tua Doni', jenis:'Konsultasi Orang Tua', c:'var(--amber)' },
+].map(j => `
+  <div style="display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--gray-50)">
+    <div style="font-size:12px;font-weight:700;color:var(--blue);width:42px;flex-shrink:0">${j.jam}</div>
+    <div><div style="font-size:13px;font-weight:500">${j.nama}</div><span style="font-size:11px;font-weight:600;color:${j.c}">${j.jenis}</span></div>
+  </div>
+`).join('');
+
+// Stats layanan bar
+document.getElementById('stats-layanan').innerHTML = [
+  { label:'Kons. Individu', val:24, pct:75, color:'var(--blue)' },
+  { label:'Kons. Kelompok', val:8,  pct:25, color:'var(--teal)' },
+  { label:'Bimb. Klasikal', val:10, pct:31, color:'var(--purple)' },
+  { label:'Kons. Ortu',     val:6,  pct:19, color:'var(--amber)' },
+].map(s => `
+  <div class="prog-item">
+    <div class="prog-label"><span class="prog-name">${s.label}</span><span class="prog-pct">${s.val}</span></div>
+    <div class="prog-track"><div class="prog-fill" data-pct="${s.pct}" style="width:0%;background:${s.color}"></div></div>
+  </div>
+`).join('');
+
+// Grafik tren
+const trenData = [['Jan',6,'#93c5fd'],['Feb',9,'#3b82f6'],['Mar',12,'#1d4ed8'],['Apr',7,'#3b82f6'],['Mei',14,'#1e40af'],['Jun',0,'#e5e7eb']];
+document.getElementById('tren-chart').innerHTML = trenData.map(([b,v,c]) => `
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+    <span style="font-size:10px;font-weight:700;color:var(--gray-600)">${v||''}</span>
+    <div style="width:100%;height:${Math.max(v*8,4)}px;background:${c};border-radius:4px 4px 0 0"></div>
+    <span style="font-size:10px;color:var(--gray-400)">${b}</span>
+  </div>
+`).join('');
+
+// Kategori grid
+document.getElementById('kategori-grid').innerHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">` +
+  [{lbl:'Tata Tertib',val:12,pct:39,c:'#ef4444'},{lbl:'Absensi',val:9,pct:29,c:'#8b5cf6'},{lbl:'Sikap',val:7,pct:23,c:'#f59e0b'},{lbl:'Akademik',val:3,pct:10,c:'#3b82f6'}]
+  .map(k => `<div style="background:var(--gray-50);border-radius:10px;padding:14px;text-align:center"><div style="font-size:22px;font-weight:800;color:${k.c}">${k.val}</div><div style="font-size:11px;color:var(--gray-500);margin-top:2px">${k.lbl}</div><div style="font-size:10px;font-weight:700;color:${k.c};margin-top:4px">${k.pct}%</div></div>`)
+  .join('') + '</div>';
+
+// Poin list
+document.getElementById('poin-list').innerHTML = pantauan.map(s => {
+  const col = s.poin>=50?'#ef4444':s.poin>=35?'#f59e0b':'#10b981';
+  return `<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+    <div style="width:130px;font-size:13px;font-weight:500">${s.name}</div>
+    <div style="font-size:11px;color:var(--gray-400);width:70px">${s.kelas}</div>
+    <div style="flex:1;height:8px;background:var(--gray-100);border-radius:99px;overflow:hidden">
+      <div style="height:100%;width:${s.poin}%;background:${col};border-radius:99px"></div>
+    </div>
+    <div style="font-size:13px;font-weight:800;color:${col};width:55px;text-align:right">${s.poin} poin</div>
+  </div>`;
+}).join('');
+
+function showForm() { document.getElementById('form-section').scrollIntoView({behavior:'smooth'}); }
+</script>
+</body>
+</html>
