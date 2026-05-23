@@ -1,537 +1,199 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Admin - SMART SMAN 2 Sampit</title>
+<div class="content">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- CARDS -->
 
-<style>
+    <div class="cards">
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
-}
-
-body{
-    background:#f4f7fc;
-    display:flex;
-}
-
-/* SIDEBAR */
-
-.sidebar{
-    width:260px;
-    height:100vh;
-    background:#003b8b;
-    color:white;
-    position:fixed;
-    left:0;
-    top:0;
-    padding:20px;
-}
-
-.logo{
-    text-align:center;
-    margin-bottom:40px;
-}
-
-.logo h2{
-    font-size:24px;
-}
-
-.menu{
-    list-style:none;
-}
-
-.menu li{
-    margin:18px 0;
-}
-
-.menu li a{
-    color:white;
-    text-decoration:none;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:12px;
-    border-radius:10px;
-    transition:0.3s;
-}
-
-.menu li a:hover{
-    background:rgba(255,255,255,0.2);
-}
-
-/* MAIN */
-
-.main{
-    margin-left:260px;
-    width:calc(100% - 260px);
-}
-
-/* TOPBAR */
-
-.topbar{
-    background:white;
-    padding:20px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    box-shadow:0 2px 10px rgba(0,0,0,0.05);
-}
-
-.topbar h1{
-    color:#003b8b;
-}
-
-.profile{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.profile img{
-    width:45px;
-    height:45px;
-    border-radius:50%;
-}
-
-/* DASHBOARD CONTENT */
-
-.content{
-    padding:30px;
-}
-
-/* CARDS */
-
-.cards{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
-    margin-bottom:40px;
-}
-
-.card{
-    background:white;
-    padding:25px;
-    border-radius:15px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.08);
-    transition:0.3s;
-}
-
-.card:hover{
-    transform:translateY(-5px);
-}
-
-.card i{
-    font-size:35px;
-    color:#003b8b;
-    margin-bottom:15px;
-}
-
-.card h2{
-    font-size:32px;
-    margin-bottom:10px;
-}
-
-.card p{
-    color:#666;
-}
-
-/* TABLE */
-
-.table-container{
-    background:white;
-    padding:25px;
-    border-radius:15px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.08);
-}
-
-.table-container h2{
-    margin-bottom:20px;
-    color:#003b8b;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-table th{
-    background:#003b8b;
-    color:white;
-    padding:15px;
-    text-align:left;
-}
-
-table td{
-    padding:15px;
-    border-bottom:1px solid #ddd;
-}
-
-.status{
-    padding:6px 12px;
-    border-radius:20px;
-    color:white;
-    font-size:13px;
-}
-
-.hadir{
-    background:green;
-}
-
-.izin{
-    background:orange;
-}
-
-.alfa{
-    background:red;
-}
-
-/* FOOTER */
-
-.footer{
-    margin-top:40px;
-    text-align:center;
-    color:#666;
-}
-
-/* RESPONSIVE */
-
-@media(max-width:768px){
-
-.sidebar{
-    width:80px;
-}
-
-.sidebar .logo h2{
-    display:none;
-}
-
-.menu li a span{
-    display:none;
-}
-
-.main{
-    margin-left:80px;
-    width:calc(100% - 80px);
-}
-
-}
-
-</style>
-
-</head>
-
-<body>
-
-<!-- SIDEBAR -->
-
-<div class="sidebar">
-
-    <div class="logo">
-        <h2>SMART SMAN 2</h2>
-    </div>
-
-    <ul class="menu">
-
-    <li>
-        <a href="dashboard.html">
-            <i class="fas fa-home"></i>
-            <span>Dashboard</span>
-        </a>
-    </li>
-
-    <li>
-        <a href="login.html">
-            <i class="fas fa-user-shield"></i>
-            <span>Login Admin</span>
-        </a>
-    </li>
-
-    <li>
-        <a href="login-guru.html">
-            <i class="fas fa-chalkboard-teacher"></i>
-            <span>Login Guru</span>
-        </a>
-    </li>
-
-    <li>
-        <a href="login-siswa.html">
+        <div class="card">
             <i class="fas fa-user-graduate"></i>
-            <span>Login Siswa</span>
-        </a>
-    </li>
+            <h2>1,250</h2>
+            <p>Total Siswa</p>
+        </div>
 
-    <li>
-        <a href="#">
-            <i class="fas fa-user-graduate"></i>
-            <span>Data Siswa</span>
-        </a>
-    </li>
-
-    <li>
-        <a href="#">
+        <div class="card">
             <i class="fas fa-chalkboard-teacher"></i>
-            <span>Data Guru</span>
-        </a>
-    </li>
+            <h2>78</h2>
+            <p>Total Guru</p>
+        </div>
 
-    <li>
-        <a href="#">
+        <div class="card">
             <i class="fas fa-calendar-check"></i>
-            <span>Presensi</span>
-        </a>
-    </li>
+            <h2>98%</h2>
+            <p>Kehadiran Hari Ini</p>
+        </div>
 
-    <li>
-        <a href="#">
+        <div class="card">
             <i class="fas fa-book"></i>
-            <span>Jurnal</span>
-        </a>
-    </li>
-
-    <li>
-        <a href="#">
-            <i class="fas fa-cog"></i>
-            <span>Pengaturan</span>
-        </a>
-    </li>
-
-    <li>
-        <a href="index.html">
-            <i class="fas fa-sign-out-alt"></i>
-            <span>Logout</span>
-        </a>
-    </li>
-
-</ul>
-
-</div>
-
-<!-- MAIN -->
-
-<div class="main">
-
-    <!-- TOPBAR -->
-
-    <div class="topbar">
-
-        <h1>Dashboard Admin</h1>
-
-        <div class="profile">
-            <img src="https://i.pravatar.cc/150?img=12">
-            <div>
-                <strong>Administrator</strong><br>
-                <small>SMAN 2 Sampit</small>
-            </div>
+            <h2>120</h2>
+            <p>Jurnal Mengajar</p>
         </div>
 
     </div>
-
-    <!-- CONTENT -->
 
     <!-- AKTIVITAS SEKOLAH -->
 
-<div class="table-container" style="margin-bottom:30px;">
+    <div class="table-container" style="margin-bottom:30px;">
 
-    <h2>Aktivitas Sekolah Hari Ini</h2>
+        <h2>Aktivitas Sekolah Hari Ini</h2>
 
-    <table>
+        <table>
 
-        <thead>
-            <tr>
-                <th>Waktu</th>
-                <th>Kegiatan</th>
-                <th>Status</th>
-            </tr>
-        </thead>
+            <thead>
+                <tr>
+                    <th>Waktu</th>
+                    <th>Kegiatan</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
 
-        <tbody>
+            <tbody>
 
-            <tr>
-                <td>07:00</td>
-                <td>Presensi Siswa</td>
-                <td><span class="status hadir">Aktif</span></td>
-            </tr>
+                <tr>
+                    <td>07:00</td>
+                    <td>Presensi Siswa</td>
+                    <td><span class="status hadir">Aktif</span></td>
+                </tr>
 
-            <tr>
-                <td>09:00</td>
-                <td>Pembelajaran Kelas XII</td>
-                <td><span class="status hadir">Berlangsung</span></td>
-            </tr>
+                <tr>
+                    <td>09:00</td>
+                    <td>Pembelajaran Kelas XII</td>
+                    <td><span class="status hadir">Berlangsung</span></td>
+                </tr>
 
-            <tr>
-                <td>12:00</td>
-                <td>Istirahat</td>
-                <td><span class="status izin">Pending</span></td>
-            </tr>
+                <tr>
+                    <td>12:00</td>
+                    <td>Istirahat</td>
+                    <td><span class="status izin">Pending</span></td>
+                </tr>
 
-        </tbody>
+            </tbody>
 
-    </table>
+        </table>
 
-</div>
-
-<!-- PENGUMUMAN -->
-
-<div class="table-container" style="margin-bottom:30px;">
-
-    <h2>Pengumuman Sekolah</h2>
-
-    <table>
-
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Pengumuman</th>
-                <th>Tanggal</th>
-            </tr>
-        </thead>
-
-        <tbody>
-
-            <tr>
-                <td>1</td>
-                <td>Pelaksanaan ANBK Tahun 2026</td>
-                <td>20 Mei 2026</td>
-            </tr>
-
-            <tr>
-                <td>2</td>
-                <td>Pembagian Raport Semester Genap</td>
-                <td>10 Juni 2026</td>
-            </tr>
-
-            <tr>
-                <td>3</td>
-                <td>Libur Nasional Hari Pendidikan</td>
-                <td>02 Mei 2026</td>
-            </tr>
-
-        </tbody>
-
-    </table>
-
-</div>
-
-<!-- QUICK MENU -->
-
-<div class="cards">
-
-    <div class="card">
-        <i class="fas fa-file-excel"></i>
-        <h2>Export</h2>
-        <p>Export data siswa dan presensi ke Excel.</p>
     </div>
 
-    <div class="card">
-        <i class="fas fa-print"></i>
-        <h2>Cetak</h2>
-        <p>Cetak laporan presensi dan jurnal guru.</p>
+    <!-- PENGUMUMAN -->
+
+    <div class="table-container" style="margin-bottom:30px;">
+
+        <h2>Pengumuman Sekolah</h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Pengumuman</th>
+                    <th>Tanggal</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>1</td>
+                    <td>Pelaksanaan ANBK Tahun 2026</td>
+                    <td>20 Mei 2026</td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>Pembagian Raport Semester Genap</td>
+                    <td>10 Juni 2026</td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>Libur Nasional Hari Pendidikan</td>
+                    <td>02 Mei 2026</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
     </div>
 
-    <div class="card">
-        <i class="fas fa-chart-line"></i>
-        <h2>Statistik</h2>
-        <p>Lihat statistik kehadiran siswa.</p>
+    <!-- DATA PRESENSI -->
+
+    <div class="table-container">
+
+        <h2>Data Presensi Siswa</h2>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Kelas</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>1</td>
+                    <td>Ahmad Fauzi</td>
+                    <td>XII IPA 1</td>
+                    <td><span class="status hadir">Hadir</span></td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>Siti Aisyah</td>
+                    <td>XI IPS 2</td>
+                    <td><span class="status izin">Izin</span></td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>Rizky Ramadhan</td>
+                    <td>X IPA 3</td>
+                    <td><span class="status alfa">Alfa</span></td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
     </div>
 
-    <div class="card">
-        <i class="fas fa-database"></i>
-        <h2>Database</h2>
-        <p>Kelola data sekolah dan pengguna.</p>
-    </div>
+    <!-- QUICK MENU -->
 
-</div>
+    <div class="cards" style="margin-top:30px;">
 
-        <!-- CARDS -->
-
-        <div class="cards">
-
-            <div class="card">
-                <i class="fas fa-user-graduate"></i>
-                <h2>1,250</h2>
-                <p>Total Siswa</p>
-            </div>
-
-            <div class="card">
-                <i class="fas fa-chalkboard-teacher"></i>
-                <h2>78</h2>
-                <p>Total Guru</p>
-            </div>
-
-            <div class="card">
-                <i class="fas fa-calendar-check"></i>
-                <h2>98%</h2>
-                <p>Kehadiran Hari Ini</p>
-            </div>
-
-            <div class="card">
-                <i class="fas fa-book"></i>
-                <h2>120</h2>
-                <p>Jurnal Mengajar</p>
-            </div>
-
+        <div class="card">
+            <i class="fas fa-file-excel"></i>
+            <h2>Export</h2>
+            <p>Export data siswa dan presensi ke Excel.</p>
         </div>
 
-        <!-- TABLE -->
-
-        <div class="table-container">
-
-            <h2>Data Presensi Siswa</h2>
-
-            <table>
-
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama</th>
-                        <th>Kelas</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    <tr>
-                        <td>1</td>
-                        <td>Ahmad Fauzi</td>
-                        <td>XII IPA 1</td>
-                        <td><span class="status hadir">Hadir</span></td>
-                    </tr>
-
-                    <tr>
-                        <td>2</td>
-                        <td>Siti Aisyah</td>
-                        <td>XI IPS 2</td>
-                        <td><span class="status izin">Izin</span></td>
-                    </tr>
-
-                    <tr>
-                        <td>3</td>
-                        <td>Rizky Ramadhan</td>
-                        <td>X IPA 3</td>
-                        <td><span class="status alfa">Alfa</span></td>
-                    </tr>
-
-                </tbody>
-
-            </table>
-
+        <div class="card">
+            <i class="fas fa-print"></i>
+            <h2>Cetak</h2>
+            <p>Cetak laporan presensi dan jurnal guru.</p>
         </div>
 
-        <div class="footer">
-            <p>© 2026 SMART SMAN 2 Sampit</p>
+        <div class="card">
+            <i class="fas fa-chart-line"></i>
+            <h2>Statistik</h2>
+            <p>Lihat statistik kehadiran siswa.</p>
+        </div>
+
+        <div class="card">
+            <i class="fas fa-database"></i>
+            <h2>Database</h2>
+            <p>Kelola data sekolah dan pengguna.</p>
         </div>
 
     </div>
 
-</div>
+    <!-- FOOTER -->
 
-</body>
-</html>
+    <div class="footer">
+        <p>© 2026 SMART SMAN 2 Sampit</p>
+    </div>
+
+</div>
