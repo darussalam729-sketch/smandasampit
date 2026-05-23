@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Siswa - SMART SMAN 2 Sampit</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#00695c,#00a884);
+}
+
+.login-box{
+    width:400px;
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+.logo{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.logo i{
+    font-size:60px;
+    color:#00695c;
+}
+
+.logo h1{
+    color:#00695c;
+    margin-top:10px;
+}
+
+.input-group{
+    margin-bottom:20px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:bold;
+}
+
+.input-group input{
+    width:100%;
+    padding:14px;
+    border:1px solid #ccc;
+    border-radius:10px;
+}
+
+.btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#00695c;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.btn:hover{
+    background:#004d40;
+}
+
+.demo{
+    margin-top:20px;
+    background:#e8fffa;
+    padding:15px;
+    border-radius:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+    <div class="logo">
+        <i class="fas fa-user-graduate"></i>
+        <h1>Login Siswa</h1>
+        <p>SMART SMAN 2 Sampit</p>
+    </div>
+
+    <form onsubmit="loginSiswa(event)">
+
+        <div class="input-group">
+            <label>NISN / Username</label>
+            <input type="text" id="username" required>
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="password" required>
+        </div>
+
+        <button class="btn">
+            Login Siswa
+        </button>
+
+    </form>
+
+    <div class="demo">
+        <strong>Demo Login:</strong><br>
+        Username: siswa<br>
+        Password: siswa123
+    </div>
+
+</div>
+
+<script>
+
+function loginSiswa(event){
+
+    event.preventDefault();
+
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
+
+    if(username === "siswa" && password === "siswa123"){
+
+        alert("Login Siswa Berhasil");
+        window.location.href = "dashboard.html";
+
+    }else{
+
+        alert("Username atau Password Salah");
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
