@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presensi Murid — SMART SMAN 2 Sampit</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">S</div>
+      <div class="logo-text"><div class="app-name">SMART</div><div class="school-name">SMAN 2 SAMPIT</div></div>
+    </div>
+    <nav>
+      <div class="nav-section"><div class="nav-label">Utama</div>
+        <a class="nav-item" href="index.html"><span class="ni">⊞</span> Dashboard</a>
+        <a class="nav-item" href="jadwal.html"><span class="ni">📅</span> Jadwal</a>
+        <a class="nav-item" href="jurnal.html"><span class="ni">📓</span> Jurnal Guru</a>
+        <a class="nav-item active" href="presensi.html"><span class="ni">✅</span> Presensi <span class="nav-badge">Baru</span></a>
+      </div>
+      <div class="nav-section"><div class="nav-label">KBM &amp; Izin</div>
+        <a class="nav-item" href="rekap-kbm.html"><span class="ni">📊</span> Rekap KBM</a>
+        <a class="nav-item" href="izin.html"><span class="ni">📝</span> Izin Siswa</a>
+        <a class="nav-item" href="surat-izin.html"><span class="ni">🗂️</span> Surat Izin</a>
+        <a class="nav-item" href="alokasi.html"><span class="ni">⏱️</span> Alokasi Waktu</a>
+      </div>
+      <div class="nav-section"><div class="nav-label">Layanan Siswa</div>
+        <a class="nav-item" href="bk.html"><span class="ni">💙</span> Layanan BK</a>
+        <a class="nav-item" href="pembinaan.html"><span class="ni">⚠️</span> Pembinaan BK</a>
+        <a class="nav-item" href="walikelas.html"><span class="ni">👩‍🏫</span> Wali Kelas</a>
+      </div>
+      <div class="nav-section"><div class="nav-label">Laporan</div>
+        <a class="nav-item" href="laporan.html"><span class="ni">📈</span> Laporan</a>
+        <a class="nav-item" href="pengaturan.html"><span class="ni">⚙️</span> Pengaturan</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer"><div class="user-info"><div class="user-av">KS</div><div><div class="user-name">Kepala Sekolah</div><div class="user-role">Administrator</div></div></div></div>
+  </aside>
+
+  <main class="main">
+    <header class="header">
+      <div style="flex:1">
+        <div class="header-title">Presensi Murid</div>
+        <div class="header-sub today-date"></div>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="btn btn-outline btn-sm" onclick="exportTableCSV('presTable','presensi.csv')">📥 Export CSV</button>
+        <button class="btn btn-outline btn-sm" onclick="printPage()">🖨️ Cetak</button>
+        <button class="btn btn-primary btn-sm" onclick="simpanPresensi()">💾 Simpan</button>
+      </div>
+    </header>
+
+    <div class="content">
+      <!-- Mini stats -->
+      <div class="mini-stats" id="mini-stats"></div>
+
+      <!-- Controls -->
+      <div class="flex gap-3 mb-5" style="flex-wrap:wrap;align-items:center">
+        <div class="search-bar" style="max-width:280px">
+          <span>🔍</span>
+          <input type="text" id="search-input" placeholder="Cari nama siswa..." oninput="filterSiswa(this.value)">
+        </div>
+        <select class="form-ctrl" style="width:auto" id="kelas-select" onchange="renderTable()">
+          <option value="XII IPA 1">XII IPA 1</option>
+          <option value="XII IPA 2">XII IPA 2</option>
+          <option value="XI IPA 1">XI IPA 1</option>
+          <option value="XI IPS 2">XI IPS 2</option>
+          <option value="X MIPA 1">X MIPA 1</option>
+        </select>
+        <select class="form-ctrl" style="width:auto">
+          <option>Jumat, 22 Mei 2026</option>
+          <option>Kamis, 21 Mei 2026</option>
+        </select>
+        <button class="btn btn-outline btn-sm" onclick="setAllHadir()">✅ Tandai Semua Hadir</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 320px;gap:16px">
+        <!-- Table -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title" id="table-title">Daftar Siswa — XII IPA 1</div>
+              <div class="card-sub">Wali Kelas: Ibu Dewi Rahayu, S.Pd</div>
+            </div>
+            <button class="btn btn-outline btn-sm">📷 Scan QR</button>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table" id="presTable">
+              <thead>
+                <tr>
+                  <th width="40">No</th>
+                  <th>Nama Siswa</th>
+                  <th>NISN</th>
+                  <th>Status Kehadiran</th>
+                  <th>Catatan</th>
+                </tr>
+              </thead>
+              <tbody id="presBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Right -->
+        <div class="flex-col">
+          <!-- Rekap donut -->
+          <div class="card">
+            <div class="card-header"><div class="card-title">Rekap Kelas</div></div>
+            <div class="card-body">
+              <div id="rekap-bars"></div>
+            </div>
+          </div>
+          <!-- Izin pending -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Izin Menunggu</div>
+              <span class="badge badge-red">3 pending</span>
+            </div>
+            <div class="card-body" style="padding:10px 18px" id="izin-pending"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="assets/js/app.js"></script>
+<script>
+const STATUSES = {
+  H: { label:'Hadir',     cls:'badge-green',  border:'#10b981', bg:'#ecfdf5' },
+  S: { label:'Sakit',     cls:'badge-amber',  border:'#f59e0b', bg:'#fffbeb' },
+  I: { label:'Izin',      cls:'badge-blue',   border:'#1a56db', bg:'#eff6ff' },
+  A: { label:'Alpha',     cls:'badge-red',    border:'#ef4444', bg:'#fef2f2' },
+  T: { label:'Terlambat', cls:'badge-purple', border:'#8b5cf6', bg:'#f5f3ff' },
+};
+
+let students = [
+  {no:1,name:'Ahmad Rizki',nisn:'0056781234',status:'H'},
+  {no:2,name:'Bagus Wijaya',nisn:'0056781235',status:'T'},
+  {no:3,name:'Citra Dewi',nisn:'0056781236',status:'H'},
+  {no:4,name:'Dian Pratiwi',nisn:'0056781237',status:'H'},
+  {no:5,name:'Eka Saputra',nisn:'0056781238',status:'S'},
+  {no:6,name:'Fajar Nugroho',nisn:'0056781239',status:'H'},
+  {no:7,name:'Gilang Ramadhan',nisn:'0056781240',status:'H'},
+  {no:8,name:'Hani Kusuma',nisn:'0056781241',status:'I'},
+  {no:9,name:'Ilham Maulana',nisn:'0056781242',status:'H'},
+  {no:10,name:'Juwita Sari',nisn:'0056781243',status:'H'},
+  {no:11,name:'Kartika Wulandari',nisn:'0056781244',status:'H'},
+  {no:12,name:'Lutfi Haikal',nisn:'0056781245',status:'A'},
+  {no:13,name:'Maya Anggraini',nisn:'0056781246',status:'H'},
+  {no:14,name:'Nanda Puspita',nisn:'0056781247',status:'H'},
+  {no:15,name:'Oki Firmansyah',nisn:'0056781248',status:'H'},
+];
+
+function setStatus(no, s) {
+  const st = students.find(x => x.no === no);
+  if (st) { st.status = s; updateMiniStats(); updateRekapBars(); }
+}
+
+function renderTable(search = '') {
+  const tbody = document.getElementById('presBody');
+  tbody.innerHTML = students
+    .filter(s => s.name.toLowerCase().includes(search.toLowerCase()))
+    .map(s => {
+      const btns = Object.entries(STATUSES).map(([k,v]) =>
+        `<button onclick="setStatus(${s.no},'${k}');this.closest('tr').querySelectorAll('.s-btn').forEach(b=>b.classList.remove('sel'));this.classList.add('sel');"
+          class="s-btn btn btn-sm" style="padding:3px 8px;font-size:11px;border:1.5px solid ${v.border};color:${v.border};background:${s.status===k?v.bg:'white'};${s.status===k?'font-weight:700;':''}"
+          >${v.label}</button>`
+      ).join('');
+      return `<tr>
+        <td style="font-weight:600;color:var(--gray-500)">${s.no}</td>
+        <td style="font-weight:600">${s.name}</td>
+        <td style="color:var(--gray-400);font-size:12px">${s.nisn}</td>
+        <td><div class="flex gap-3" style="gap:4px;flex-wrap:wrap">${btns}</div></td>
+        <td><input type="text" style="border:none;background:transparent;outline:none;font-size:12px;font-family:inherit;color:var(--gray-600);width:100%;min-width:80px" placeholder="Catatan..."></td>
+      </tr>`;
+    }).join('');
+}
+
+function filterSiswa(val) { renderTable(val); }
+
+function setAllHadir() { students.forEach(s => s.status = 'H'); renderTable(); updateMiniStats(); updateRekapBars(); showToast('✅ Semua siswa ditandai Hadir'); }
+
+function updateMiniStats() {
+  const counts = { H:0, S:0, I:0, A:0, T:0 };
+  students.forEach(s => counts[s.status]++);
+  const el = document.getElementById('mini-stats');
+  if (el) el.innerHTML = [
+    { key:'H', emoji:'✅', label:'Hadir',     color:'#10b981' },
+    { key:'S', emoji:'🤒', label:'Sakit',     color:'#f59e0b' },
+    { key:'I', emoji:'📋', label:'Izin',      color:'#1a56db' },
+    { key:'A', emoji:'❌', label:'Alpha',     color:'#ef4444' },
+    { key:'T', emoji:'⏰', label:'Terlambat', color:'#8b5cf6' },
+  ].map(m => `
+    <div class="mini-card">
+      <div class="mini-val" style="color:${m.color}">${counts[m.key]}</div>
+      <div class="mini-lbl">${m.emoji} ${m.label}</div>
+    </div>
+  `).join('');
+}
+
+function updateRekapBars() {
+  const total = students.length;
+  const counts = { H:0, S:0, I:0, A:0, T:0 };
+  students.forEach(s => counts[s.status]++);
+  const items = [
+    { key:'H', label:'Hadir',     color:'#10b981' },
+    { key:'S', label:'Sakit',     color:'#f59e0b' },
+    { key:'I', label:'Izin',      color:'#1a56db' },
+    { key:'A', label:'Alpha',     color:'#ef4444' },
+    { key:'T', label:'Terlambat', color:'#8b5cf6' },
+  ];
+  document.getElementById('rekap-bars').innerHTML = items.map(item => {
+    const pct = total ? Math.round(counts[item.key]/total*100) : 0;
+    return `<div class="prog-item">
+      <div class="prog-label">
+        <span class="prog-name">${item.label}</span>
+        <span class="prog-pct">${counts[item.key]} (${pct}%)</span>
+      </div>
+      <div class="prog-track">
+        <div class="prog-fill" style="width:${pct}%;background:${item.color}"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+const izinData = [
+  { init:'AR', bg:'#dbeafe', tc:'#1d4ed8', name:'Ahmad Rizki', kelas:'XII IPA 1', alasan:'Izin pulang awal · Sakit kepala' },
+  { init:'NS', bg:'#dcfce7', tc:'#166534', name:'Nur Safitri',  kelas:'XII IPA 1', alasan:'Izin keluar · Keperluan keluarga' },
+  { init:'BW', bg:'#fef9c3', tc:'#713f12', name:'Bagus Wijaya', kelas:'XII IPA 1', alasan:'Terlambat · Macet di jalan' },
+];
+document.getElementById('izin-pending').innerHTML = izinData.map((iz, i) => `
+  <div id="izin-${i}" style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--gray-50)">
+    <div style="width:32px;height:32px;border-radius:8px;background:${iz.bg};color:${iz.tc};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">${iz.init}</div>
+    <div style="flex:1">
+      <div style="font-size:13px;font-weight:600">${iz.name}</div>
+      <div style="font-size:11px;color:var(--gray-400)">${iz.kelas} · ${iz.alasan}</div>
+      <div style="display:flex;gap:6px;margin-top:6px">
+        <button onclick="approveIzin(${i})" style="padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;background:var(--green-lt);color:#059669;border:none;cursor:pointer">✓ Setujui</button>
+        <button onclick="rejectIzin(${i})"  style="padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;background:var(--red-lt);color:#dc2626;border:none;cursor:pointer">✗ Tolak</button>
+      </div>
+    </div>
+  </div>
+`).join('');
+
+function approveIzin(i) { const el = document.getElementById('izin-'+i); if(el){ el.style.opacity='.4'; showToast('✅ Izin '+izinData[i].name+' disetujui'); } }
+function rejectIzin(i)  { const el = document.getElementById('izin-'+i); if(el){ el.style.opacity='.4'; showToast('❌ Izin '+izinData[i].name+' ditolak','error'); } }
+function simpanPresensi() { showToast('💾 Presensi kelas berhasil disimpan!'); }
+
+renderTable();
+updateMiniStats();
+updateRekapBars();
+</script>
+</body>
+</html>
