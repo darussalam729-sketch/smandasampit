@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Admin - SMART SMAN 2 Sampit</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#004aad,#007bff);
+}
+
+.login-container{
+    width:380px;
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+.logo{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.logo h1{
+    color:#004aad;
+    margin-top:10px;
+}
+
+.logo i{
+    font-size:60px;
+    color:#004aad;
+}
+
+.input-group{
+    margin-bottom:20px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:8px;
+    color:#333;
+    font-weight:bold;
+}
+
+.input-group input{
+    width:100%;
+    padding:14px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    outline:none;
+    font-size:15px;
+}
+
+.input-group input:focus{
+    border-color:#004aad;
+}
+
+.btn-login{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    background:#004aad;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.btn-login:hover{
+    background:#00337a;
+}
+
+.info{
+    text-align:center;
+    margin-top:20px;
+    color:#666;
+    font-size:14px;
+}
+
+.demo{
+    margin-top:20px;
+    background:#f1f5ff;
+    padding:15px;
+    border-radius:10px;
+    font-size:14px;
+    color:#333;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <div class="logo">
+        <i class="fas fa-school"></i>
+        <h1>SMART SMAN 2</h1>
+        <p>Login Administrator</p>
+    </div>
+
+    <form onsubmit="loginAdmin(event)">
+
+        <div class="input-group">
+            <label>Username</label>
+            <input type="text" id="username" placeholder="Masukkan username" required>
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="Masukkan password" required>
+        </div>
+
+        <button type="submit" class="btn-login">
+            <i class="fas fa-sign-in-alt"></i> Login
+        </button>
+
+    </form>
+
+    <div class="demo">
+        <strong>Demo Login:</strong><br>
+        Username: admin<br>
+        Password: admin123
+    </div>
+
+    <div class="info">
+        © 2026 SMART SMAN 2 Sampit
+    </div>
+
+</div>
+
+<script>
+
+function loginAdmin(event){
+
+    event.preventDefault();
+
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
+
+    if(username === "admin" && password === "admin123"){
+
+        alert("Login berhasil!");
+
+        window.location.href = "dashboard.html";
+
+    }else{
+
+        alert("Username atau password salah!");
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
