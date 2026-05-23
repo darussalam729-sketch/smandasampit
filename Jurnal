@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jurnal Mengajar — SMART SMAN 2 Sampit</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .sig-wrap { border:1px solid var(--gray-200);border-radius:10px;background:var(--gray-50);position:relative;overflow:hidden; }
+    .sig-hint  { position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:12px;color:var(--gray-300);pointer-events:none;text-align:center; }
+    .sig-hint.hidden { display:none; }
+    canvas { display:block;cursor:crosshair; }
+    .chip  { padding:5px 12px;border-radius:7px;font-size:12px;font-weight:500;border:1.5px solid var(--gray-200);color:var(--gray-500);cursor:pointer;transition:all .15s; }
+    .chip.sel { background:var(--blue-lt);border-color:var(--blue);color:var(--blue);font-weight:700; }
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-logo"><div class="logo-icon">S</div><div class="logo-text"><div class="app-name">SMART</div><div class="school-name">SMAN 2 SAMPIT</div></div></div>
+    <nav>
+      <div class="nav-section"><div class="nav-label">Utama</div>
+        <a class="nav-item" href="index.html"><span class="ni">⊞</span> Dashboard</a>
+        <a class="nav-item" href="jadwal.html"><span class="ni">📅</span> Jadwal</a>
+        <a class="nav-item active" href="jurnal.html"><span class="ni">📓</span> Jurnal Guru</a>
+        <a class="nav-item" href="presensi.html"><span class="ni">✅</span> Presensi</a>
+      </div>
+      <div class="nav-section"><div class="nav-label">KBM &amp; Izin</div>
+        <a class="nav-item" href="rekap-kbm.html"><span class="ni">📊</span> Rekap KBM</a>
+        <a class="nav-item" href="izin.html"><span class="ni">📝</span> Izin Siswa</a>
+        <a class="nav-item" href="surat-izin.html"><span class="ni">🗂️</span> Surat Izin</a>
+        <a class="nav-item" href="alokasi.html"><span class="ni">⏱️</span> Alokasi Waktu</a>
+      </div>
+      <div class="nav-section"><div class="nav-label">Layanan Siswa</div>
+        <a class="nav-item" href="bk.html"><span class="ni">💙</span> Layanan BK</a>
+        <a class="nav-item" href="pembinaan.html"><span class="ni">⚠️</span> Pembinaan BK</a>
+        <a class="nav-item" href="walikelas.html"><span class="ni">👩‍🏫</span> Wali Kelas</a>
+      </div>
+      <div class="nav-section"><div class="nav-label">Laporan</div>
+        <a class="nav-item" href="laporan.html"><span class="ni">📈</span> Laporan</a>
+        <a class="nav-item" href="pengaturan.html"><span class="ni">⚙️</span> Pengaturan</a>
+      </div>
+    </nav>
+    <div class="sidebar-footer"><div class="user-info"><div class="user-av">DR</div><div><div class="user-name">Bu Dewi Rahayu</div><div class="user-role">Guru Matematika</div></div></div></div>
+  </aside>
+
+  <main class="main">
+    <header class="header">
+      <div style="flex:1">
+        <div class="header-title">Jurnal Mengajar</div>
+        <div class="header-sub">Ibu Dewi Rahayu, S.Pd — Matematika · <span class="today-date"></span></div>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="btn btn-outline btn-sm" onclick="printPage()">📥 Export PDF</button>
+        <button class="btn btn-outline btn-sm" onclick="location.href='rekap-kbm.html'">📋 Rekap Semester</button>
+        <button class="btn btn-primary btn-sm" onclick="submitJurnal()">📤 Submit & Tanda Tangan</button>
+      </div>
+    </header>
+
+    <div class="content">
+      <!-- Tabs -->
+      <div class="tabs fit mb-5" data-tabs>
+        <button class="tab-btn">✏️ Isi Jurnal</button>
+        <button class="tab-btn">📋 Riwayat</button>
+        <button class="tab-btn">📊 Rekap KBM</button>
+      </div>
+
+      <!-- TAB 1: Form -->
+      <div class="tab-panel">
+        <div class="alert alert-warn mb-4">⚠️ <strong>Jurnal hari ini belum diisi.</strong> Harap isi sebelum pukul 15.00 WIB.</div>
+        <div style="display:grid;grid-template-columns:1fr 300px;gap:16px">
+          <div class="card">
+            <div class="card-header">
+              <div><div class="card-title">Form Jurnal Mengajar Harian</div><div class="card-sub today-date"></div></div>
+              <span class="badge badge-gray">✏️ Draft</span>
+            </div>
+            <div class="card-body">
+              <div class="form-grid">
+                <div class="form-group"><label class="form-label">Hari &amp; Tanggal</label><input class="form-ctrl" type="date" id="f-tanggal"></div>
+                <div class="form-group"><label class="form-label">Jam Pelajaran</label>
+                  <select class="form-ctrl"><option>Jam ke-1 (07.00–07.45)</option><option>Jam ke-2 (07.45–08.30)</option><option selected>Jam ke-3 (08.30–09.15)</option><option>Jam ke-4 (09.30–10.15)</option></select></div>
+                <div class="form-group"><label class="form-label">Mata Pelajaran</label>
+                  <select class="form-ctrl"><option selected>Matematika Wajib</option><option>Matematika Peminatan</option></select></div>
+                <div class="form-group"><label class="form-label">Kelas</label>
+                  <select class="form-ctrl"><option selected>XII IPA 1</option><option>XII IPA 2</option><option>XII IPA 3</option><option>XI IPA 1</option></select></div>
+                <div class="form-group full"><label class="form-label">Materi Pembelajaran</label>
+                  <input class="form-ctrl" type="text" placeholder="Topik materi hari ini..." value="Integral Parsial — Teknik dan Penerapan"></div>
+                <div class="form-group full"><label class="form-label">Kompetensi Dasar (KD)</label>
+                  <input class="form-ctrl" type="text" value="3.11 Mendeskripsikan konsep integral parsial"></div>
+                <div class="form-group full"><label class="form-label">Metode Pembelajaran</label>
+                  <div class="flex" style="gap:6px;flex-wrap:wrap;margin-top:4px">
+                    <span class="chip sel" onclick="this.classList.toggle('sel')">Ceramah</span>
+                    <span class="chip sel" onclick="this.classList.toggle('sel')">Diskusi Kelompok</span>
+                    <span class="chip" onclick="this.classList.toggle('sel')">Tanya Jawab</span>
+                    <span class="chip sel" onclick="this.classList.toggle('sel')">Latihan Soal</span>
+                    <span class="chip" onclick="this.classList.toggle('sel')">Demonstrasi</span>
+                    <span class="chip" onclick="this.classList.toggle('sel')">Discovery Learning</span>
+                    <span class="chip" onclick="this.classList.toggle('sel')">Project Based</span>
+                  </div>
+                </div>
+                <div class="form-group"><label class="form-label">Kehadiran Siswa</label>
+                  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+                    <div><label style="font-size:11px;color:var(--gray-400)">Hadir</label><input class="form-ctrl" type="number" value="33" style="margin-top:3px"></div>
+                    <div><label style="font-size:11px;color:var(--gray-400)">Sakit/Izin</label><input class="form-ctrl" type="number" value="2" style="margin-top:3px"></div>
+                    <div><label style="font-size:11px;color:var(--gray-400)">Alpha</label><input class="form-ctrl" type="number" value="1" style="margin-top:3px"></div>
+                  </div>
+                </div>
+                <div class="form-group"><label class="form-label">Media Pembelajaran</label>
+                  <select class="form-ctrl"><option>Papan Tulis + Spidol</option><option selected>Proyektor + PPT</option><option>LKS</option><option>Lab Komputer</option></select></div>
+                <div class="form-group full"><label class="form-label">Catatan Pembelajaran</label>
+                  <textarea class="form-ctrl">Siswa antusias mengikuti pelajaran. Beberapa siswa masih kesulitan pada bagian substitusi variabel.</textarea></div>
+                <div class="form-group full"><label class="form-label">Rencana Pertemuan Berikutnya</label>
+                  <input class="form-ctrl" type="text" value="Integral dengan Substitusi Trigonometri"></div>
+                <div class="form-group full">
+                  <label class="form-label">Upload Dokumentasi</label>
+                  <div style="border:2px dashed var(--gray-200);border-radius:10px;padding:20px;text-align:center;background:var(--gray-50);cursor:pointer" onclick="this.querySelector('input').click()">
+                    <div style="font-size:28px;margin-bottom:6px">📸</div>
+                    <div style="font-size:12px;color:var(--gray-500)">Klik untuk upload foto/dokumen KBM</div>
+                    <div style="font-size:11px;color:var(--gray-300);margin-top:2px">JPG, PNG, PDF · Maks. 5MB</div>
+                    <input type="file" style="display:none" accept="image/*,.pdf">
+                  </div>
+                </div>
+              </div>
+              <!-- Signature -->
+              <div style="margin-top:8px">
+                <label class="form-label" style="display:block;margin-bottom:8px">Tanda Tangan Digital Guru</label>
+                <div class="sig-wrap">
+                  <canvas id="sigCanvas" width="540" height="100"></canvas>
+                  <div class="sig-hint" id="sigHint">✍️ Tanda tangan di sini</div>
+                </div>
+                <div class="flex gap-3 mt-4" style="gap:8px;margin-top:8px">
+                  <button class="btn btn-outline btn-sm" onclick="sigPad.clear()">🗑️ Hapus</button>
+                  <span style="font-size:11px;color:var(--gray-400);align-self:center">Gambar tanda tangan Anda di atas</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right panel -->
+          <div class="flex-col">
+            <div class="card">
+              <div class="card-body">
+                <div class="flex items-center gap-3 mb-4">
+                  <div style="width:46px;height:46px;background:var(--blue-lt);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:var(--blue)">DR</div>
+                  <div><div style="font-size:14px;font-weight:700">Bu Dewi Rahayu, S.Pd</div><div style="font-size:11px;color:var(--gray-400)">NIP: 198203142006042012</div><div style="font-size:11px;color:var(--gray-400)">Guru Matematika · Wali XII IPA 1</div></div>
+                </div>
+                <div style="background:var(--gray-50);border-radius:9px;padding:12px">
+                  <div style="font-size:10px;font-weight:700;color:var(--gray-400);letter-spacing:.8px;margin-bottom:8px">ALOKASI JP SEMESTER INI</div>
+                  <div class="prog-item"><div class="prog-label"><span class="prog-name">Mat. Wajib</span><span class="prog-pct">87%</span></div><div class="prog-track"><div class="prog-fill" style="width:87%;background:var(--blue)"></div></div></div>
+                  <div class="prog-item" style="margin-bottom:0"><div class="prog-label"><span class="prog-name">Mat. Peminatan</span><span class="prog-pct">90%</span></div><div class="prog-track"><div class="prog-fill" style="width:90%;background:var(--green)"></div></div></div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header"><div class="card-title">Status Persetujuan</div></div>
+              <div class="card-body" style="padding:14px 18px">
+                <div id="approval-steps"></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header"><div class="card-title">Minggu Ini</div></div>
+              <div class="card-body">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+                  <div style="background:var(--gray-50);border-radius:8px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:800;color:var(--green)">4</div><div style="font-size:10px;color:var(--gray-400);margin-top:2px">Jurnal Diisi</div></div>
+                  <div style="background:var(--gray-50);border-radius:8px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:800;color:var(--amber)">1</div><div style="font-size:10px;color:var(--gray-400);margin-top:2px">Belum Diisi</div></div>
+                  <div style="background:var(--gray-50);border-radius:8px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:800;color:var(--blue)">3</div><div style="font-size:10px;color:var(--gray-400);margin-top:2px">Disetujui</div></div>
+                  <div style="background:var(--gray-50);border-radius:8px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:800;color:var(--gray-400)">1</div><div style="font-size:10px;color:var(--gray-400);margin-top:2px">Menunggu</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: Riwayat -->
+      <div class="tab-panel">
+        <div class="card">
+          <div class="card-header"><div><div class="card-title">Riwayat Jurnal Mengajar</div><div class="card-sub">Semester Genap 2025/2026</div></div><button class="btn btn-outline btn-sm" onclick="printPage()">📥 Export PDF</button></div>
+          <div class="card-body" style="padding:8px 18px" id="riwayat-list"></div>
+        </div>
+      </div>
+
+      <!-- TAB 3: Rekap -->
+      <div class="tab-panel">
+        <div class="grid-2">
+          <div class="card"><div class="card-header"><div class="card-title">Rekap JP Semester</div></div><div class="card-body">
+            <div style="font-size:36px;font-weight:800;color:var(--blue);text-align:center;margin:8px 0" data-count="156">0</div>
+            <div style="text-align:center;font-size:12px;color:var(--gray-400);margin-bottom:16px">dari 176 JP target</div>
+            <div class="prog-item"><div class="prog-label"><span class="prog-name">Ketercapaian</span><span class="prog-pct">89%</span></div><div class="prog-track"><div class="prog-fill" data-pct="89" style="width:0%;background:var(--blue)"></div></div></div>
+          </div></div>
+          <div class="card"><div class="card-header"><div class="card-title">Kehadiran Rata-rata Siswa</div></div><div class="card-body">
+            <div style="font-size:36px;font-weight:800;color:var(--green);text-align:center;margin:8px 0">94%</div>
+            <div style="text-align:center;font-size:12px;color:var(--gray-400);margin-bottom:16px">rata-rata kehadiran</div>
+            <div class="prog-item"><div class="prog-label"><span class="prog-name">Hadir</span><span class="prog-pct">94%</span></div><div class="prog-track"><div class="prog-fill" data-pct="94" style="width:0%;background:var(--green)"></div></div></div>
+            <div class="prog-item"><div class="prog-label"><span class="prog-name">Sakit/Izin</span><span class="prog-pct">4%</span></div><div class="prog-track"><div class="prog-fill" data-pct="4" style="width:0%;background:var(--amber)"></div></div></div>
+            <div class="prog-item"><div class="prog-label"><span class="prog-name">Alpha</span><span class="prog-pct">2%</span></div><div class="prog-track"><div class="prog-fill" data-pct="2" style="width:0%;background:var(--red)"></div></div></div>
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="assets/js/app.js"></script>
+<script>
+// Set today's date in date input
+document.getElementById('f-tanggal').value = new Date().toISOString().slice(0,10);
+
+// Signature pad
+const sigPad = initSignaturePad('sigCanvas','sigHint');
+
+// Approval steps
+document.getElementById('approval-steps').innerHTML = [
+  { icon:'✏️', label:'Guru Mengisi', name:'Bu Dewi Rahayu', status:'draft' },
+  { icon:'👩‍💼', label:'Verifikasi Waka', name:'Pak Ahmad Fauzi, M.Pd', status:'wait' },
+  { icon:'✅', label:'Disetujui', name:'', status:'wait' },
+].map((s, i) => `
+  <div style="display:flex;align-items:center;gap:10px;${i<2?'margin-bottom:8px':''}opacity:${s.status==='wait'?.45:1}">
+    <div style="width:28px;height:28px;border-radius:50%;background:var(--${s.status==='draft'?'blue':'gray'}-lt);display:flex;align-items:center;justify-content:center;font-size:13px">${s.icon}</div>
+    <div style="flex:1"><div style="font-size:12px;font-weight:600;color:var(--gray-700)">${s.label}</div>${s.name?`<div style="font-size:11px;color:var(--gray-400)">${s.name}</div>`:''}</div>
+    <span class="badge badge-gray">${s.status==='draft'?'Belum':'Menunggu'}</span>
+  </div>
+  ${i<2?'<div style="width:1px;height:14px;background:var(--gray-200);margin-left:14px;margin-bottom:8px"></div>':''}
+`).join('');
+
+// Riwayat list
+const riwayatData = [
+  { day:'21', month:'Mei', mapel:'Matematika Wajib', kelas:'XII IPA 2', materi:'Integral Substitusi', status:'approve', jp:2 },
+  { day:'20', month:'Mei', mapel:'Matematika Peminatan', kelas:'XI IPA 1', materi:'Turunan Fungsi Trigonometri', status:'approve', jp:3 },
+  { day:'19', month:'Mei', mapel:'Matematika Wajib', kelas:'XII IPA 1', materi:'Integral Tentu — Luas Daerah', status:'approve', jp:2 },
+  { day:'18', month:'Mei', mapel:'Matematika Wajib', kelas:'XII IPA 3', materi:'Aturan Rantai & Diferensiasi', status:'wait', jp:2 },
+  { day:'15', month:'Mei', mapel:'Matematika Peminatan', kelas:'XI IPA 2', materi:'Limit Fungsi Aljabar', status:'approve', jp:3 },
+];
+document.getElementById('riwayat-list').innerHTML = riwayatData.map(r => `
+  <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--gray-50);cursor:pointer">
+    <div style="width:42px;text-align:center;flex-shrink:0">
+      <div style="font-size:18px;font-weight:800;color:var(--blue);line-height:1">${r.day}</div>
+      <div style="font-size:10px;color:var(--gray-400);text-transform:uppercase">${r.month}</div>
+    </div>
+    <div style="flex:1">
+      <div style="font-size:13px;font-weight:600;color:var(--gray-800)">${r.mapel} — ${r.kelas}</div>
+      <div style="font-size:11px;color:var(--gray-400);margin-top:2px">${r.materi} · ${r.jp} JP</div>
+    </div>
+    <span class="badge ${r.status==='approve'?'badge-green':'badge-amber'}">${r.status==='approve'?'✓ Disetujui':'⏳ Review'}</span>
+  </div>
+`).join('');
+
+function submitJurnal() {
+  if (sigPad && sigPad.isEmpty()) { showToast('Harap isi tanda tangan digital terlebih dahulu','warning'); return; }
+  showToast('✅ Jurnal berhasil disubmit dan menunggu persetujuan Waka!');
+}
+</script>
+</body>
+</html>
